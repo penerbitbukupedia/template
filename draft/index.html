@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download DOCX from GitHub Pages</title>
+</head>
+<body>
+    <h1>Download DOCX File</h1>
+
+    <button id="download-docx">Download Draft DOCX</button>
+
+    <script type="module">
+        document.getElementById('download-docx').addEventListener('click', async () => {
+            const docxUrl = 'http://naskah.bukupedia.co.id/template/draft.docx'; // Ganti dengan URL file .docx Anda
+
+            try {
+                const response = await fetch(docxUrl);
+                if (!response.ok) {
+                    throw new Error('File not found or inaccessible');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+
+                // Create a temporary link element
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'draft.docx'; // Nama file yang akan diunduh
+                document.body.appendChild(a);
+                a.click();
+
+                // Clean up and revoke the object URL
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading the file:', error);
+            }
+        });
+    </script>
+</body>
+</html>
